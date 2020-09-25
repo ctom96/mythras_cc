@@ -1,103 +1,34 @@
 package mythchar
 
-// "Enum" for gender
-type Gender int
-const (
-	Male Gender = iota
-	Female
+import (
+	"fmt"
+	"strconv"
 )
-func (g Gender) String() string {
-	return [...]string{"Male", "Female"}[g]
-}
 
-// Culture "enum"
-type Culture int
-const (
-	Barbarian Culture = iota
-	Civilized
-	Nomadic
-	Primitive
-)
-func (c Culture) String() string {
-	return [...]string{
-		"Barbarian", 
-		"Civilized", 
-		"Nomadic", 
-		"Primitive",
-	}[c]
-}
-
-// Social Class "Enum"
-type SocialClass int
-const (
-	Outcast SocialClass = iota
-	Slave 
-	Freeman
-	Gentry
-	Aristocracy
-	Ruling
-)
-func (s SocialClass) String() string {
-	return [...]string{
-		"Outcast",
-		"Slave",
-		"Freeman",
-		"Gentry",
-		"Aristocracy",
-		"Ruling",
-	}[s]
-}
-
-// Characteristics 
-type Stat struct {
-	Original int
-	Max int
-	Current int
-}
-
-type Attribute stuct {
-	Original int
-	Current int
-}
-
-type Skill struct {
-	
-}
-
-// ---------------
 // MythChar is the whole Character Type
-// ---------------
 type MythChar struct {
-	// General Character statistics
-	Player MythPlayer
-	Name string
-	Species string
-	Frame string
-	Height int
-	Weight int
-	Gender Gender
-	Culture Culture
-	SocialClass SocialClass
-	Career string
-	
-	// Stats
-	Str Stat
-	Con Stat
-	Siz Stat
-	Dex Stat
-	Int Stat
-	Pow Stat
-	Cha Stat
+	Stats Characteristics
+	Attrs Attributes
+}
 
-	// Attributes
-	ActionPoints Attribute
-	DamageModifier Attribute
-	ExperienceModifier Attribute
-	HealingRate Attribute
-	Initiative Attribute
-	LuckPoints Attribute
-	MovementRate Attribute
+// PrintStats prints the stats of a character
+func (m MythChar) PrintStats() {
+	fmt.Println("Str: " + strconv.Itoa(m.Stats.Str.Current))
+	fmt.Println("Con: " + strconv.Itoa(m.Stats.Con.Current))
+	fmt.Println("Siz: " + strconv.Itoa(m.Stats.Siz.Current))
+	fmt.Println("Dex: " + strconv.Itoa(m.Stats.Dex.Current))
+	fmt.Println("Int: " + strconv.Itoa(m.Stats.Int.Current))
+	fmt.Println("Pow: " + strconv.Itoa(m.Stats.Pow.Current))
+	fmt.Println("Cha: " + strconv.Itoa(m.Stats.Cha.Current))
+}
 
-	// Skills
-
+// PrintAttrs prints the attrs of a character
+func (m MythChar) PrintAttrs() {
+	fmt.Println("ActionPoints: " + strconv.Itoa(m.Attrs.ActionPoints))
+	fmt.Println("DamageModifier: " + m.Attrs.DamageModifier)
+	fmt.Println("ExperienceModifier: " + strconv.Itoa(m.Attrs.ExperienceModifier))
+	fmt.Println("HealingRate: " + strconv.Itoa(m.Attrs.HealingRate))
+	fmt.Println("Initiative: " + strconv.Itoa(m.Attrs.Initiative))
+	fmt.Println("LuckPoints: " + strconv.Itoa(m.Attrs.LuckPoints))
+	fmt.Println("MovementRate: " + strconv.Itoa(m.Attrs.MovementRate))
 }
