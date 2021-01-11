@@ -1,29 +1,53 @@
 package mythchar
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/ctom96/mythras_cc/mythutil"
 )
 
-// Stat is for a specific stat
-type Stat struct {
+// Characteristic is a base stat, like Strength
+type Characteristic struct {
+	Name     string
+	DieRoll  string
 	Original int
 	Max      int
 	Current  int
 }
 
-// Characteristics is a set of stats in a character
-type Characteristics struct {
-	Str Stat
-	Con Stat
-	Siz Stat
-	Dex Stat
-	Int Stat
-	Pow Stat
-	Cha Stat
+func initCharacteristic(name string, dieRoll string) Characteristic {
+	c := Characteristic{
+		Name:    name,
+		DieRoll: dieRoll,
+	}
+
+	roll, err := mythutil.Roll(c.DieRoll)
+	if err != nil {
+		c.Original = 0
+		c.Max = 0
+		c.Current = 0
+		fmt.Println("Error:", err)
+	}
+	c.Original = roll
+	c.Max = roll
+	c.Current = roll
+
+	return c
 }
 
+// Characteristics is a set of stats in a character
+type Characteristics struct {
+	Str Characteristic
+	Con Characteristic
+	Siz Characteristic
+	Dex Characteristic
+	Int Characteristic
+	Pow Characteristic
+	Cha Characteristic
+}
+
+// Attributes are the derived traits of a character that are not skills, like Healing Rate
 type Attributes struct {
 	ActionPoints       int
 	DamageModifier     string
@@ -34,31 +58,17 @@ type Attributes struct {
 	MovementRate       int
 }
 
-// ----------
-// Useful Generator Methods
-// ----------
-
-// CreateStat takes a die string and returns a stat
-func CreateStat(dieString string) Stat {
-	roll, err := mythutil.Roll(dieString)
-	if err != nil {
-		return Stat{Original: -1, Max: -1, Current: -1}
-	}
-
-	return Stat{Original: roll, Max: roll, Current: roll}
-}
-
 // RollHuman randomly creates characteristics following the rolling rules
 // of rolling up a human (SIZ, INT are 2d6+6)
 func RollHuman() Characteristics {
 	return Characteristics{
-		Str: CreateStat("3d6"),
-		Con: CreateStat("3d6"),
-		Siz: CreateStat("2d6+6"),
-		Dex: CreateStat("3d6"),
-		Int: CreateStat("2d6+6"),
-		Pow: CreateStat("3d6"),
-		Cha: CreateStat("3d6"),
+		Str: initCharacteristic("Str", "3d6"),
+		Con: initCharacteristic("Con", "3d6"),
+		Siz: initCharacteristic("Siz", "2d6+6"),
+		Dex: initCharacteristic("Dex", "3d6"),
+		Int: initCharacteristic("Int", "2d6+6"),
+		Pow: initCharacteristic("Pow", "3d6"),
+		Cha: initCharacteristic("Cha", "3d6"),
 	}
 }
 
@@ -77,23 +87,23 @@ func GenerateAttributes(chars Characteristics) Attributes {
 	return retAttributes
 }
 
-func determineLuckPoints(pow Stat) int {
+func determineLuckPoints(pow Characteristic) int {
 	return int(math.Ceil(float64(pow.Current) / 6.0))
 }
 
-func determineInitiative(dex Stat, intel Stat) int {
+func determineInitiative(dex Characteristic, intel Characteristic) int {
 	return int(math.Floor(float64(dex.Current+intel.Current) / 2.0))
 }
 
-func determineHealingRate(con Stat) int {
+func determineHealingRate(con Characteristic) int {
 	return int(math.Ceil(float64(con.Current) / 6.0))
 }
 
-func determineExperienceModifier(cha Stat) int {
+func determineExperienceModifier(cha Characteristic) int {
 	return int(float64(cha.Current)/6.0) - 1
 }
 
-func determineDamageModifier(str Stat, siz Stat) string {
+func determineDamageModifier(str Characteristic, siz Characteristic) string {
 	total := str.Current + siz.Current
 	switch {
 	case total <= 5:
@@ -137,6 +147,6 @@ func determineDamageModifier(str Stat, siz Stat) string {
 	}
 }
 
-func determineActionPoints(intel Stat, dex Stat) int {
+func determineActionPoints(intel Characteristic, dex Characteristic) int {
 	return int(math.Ceil(float64(intel.Current+dex.Current) / 12.0))
 }
