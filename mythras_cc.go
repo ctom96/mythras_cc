@@ -11,6 +11,7 @@ func main() {
 	mythserv.StartServer()
 
 	player := mythchar.CreateHuman("Duncan Mac Duffy")
+	player.CreateProfessionalSkill("Acting")
 
 	fmt.Println(player)
 }

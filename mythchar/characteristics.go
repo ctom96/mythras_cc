@@ -62,13 +62,13 @@ type Attributes struct {
 // of rolling up a human (SIZ, INT are 2d6+6)
 func RollHuman() Characteristics {
 	return Characteristics{
-		Str: initCharacteristic("Str", "3d6"),
-		Con: initCharacteristic("Con", "3d6"),
-		Siz: initCharacteristic("Siz", "2d6+6"),
-		Dex: initCharacteristic("Dex", "3d6"),
-		Int: initCharacteristic("Int", "2d6+6"),
-		Pow: initCharacteristic("Pow", "3d6"),
-		Cha: initCharacteristic("Cha", "3d6"),
+		Str: initCharacteristic("str", "3d6"),
+		Con: initCharacteristic("con", "3d6"),
+		Siz: initCharacteristic("siz", "2d6+6"),
+		Dex: initCharacteristic("dex", "3d6"),
+		Int: initCharacteristic("int", "2d6+6"),
+		Pow: initCharacteristic("pow", "3d6"),
+		Cha: initCharacteristic("cha", "3d6"),
 	}
 }
 
